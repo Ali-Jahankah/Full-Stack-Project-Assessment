@@ -1,0 +1,48 @@
+.header {
+  width: 100%;
+}
+.header_nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5em 0;
+  background: rgb(245, 238, 238);
+  align-items: center;
+}
+
+.logo_div img {
+  max-width: 70px;
+  background: transparent;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.wave_div {
+  margin-top: -1px;
+}
+.title {
+  font-size: 1rem;
+  text-align: center;
+}
+.search_svg {
+  width: 30px;
+  cursor: pointer;
+}
+.title_search_div {
+  width: 50%;
+}
+.title_search_div input {
+  max-width: 100%;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 10px;
+}
+.search_cont {
+  position: relative;
+}
+.search_btn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 0.7rem;
+}
