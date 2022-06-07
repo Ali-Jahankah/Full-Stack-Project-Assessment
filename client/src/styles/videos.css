@@ -1,0 +1,10 @@
+.video_article {
+  width: 100%;
+  padding: 0.5em;
+  background-color: #ff5800;
+  background-image: linear-gradient(0deg, #ff5800 0%, #880830 100%);
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

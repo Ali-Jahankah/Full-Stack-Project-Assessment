@@ -1,0 +1,18 @@
+.footer {
+  width: 100%;
+  background: black;
+}
+.footer h6 {
+  margin: 0;
+  padding: 1em;
+  color: white;
+  font-weight: 700;
+  text-align: center;
+}
+.footer_wave {
+  width: 100%;
+  background: black;
+}
+.footer_wave img {
+  margin-top: -1px;
+}
