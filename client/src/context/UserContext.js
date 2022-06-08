@@ -8,6 +8,7 @@ const UserContext = createContext({
   removeVideoHandler: () => {},
   searchBtn: false,
   setSearchBtn: () => {},
+  addVideoHandler: () => {},
 });
 
 export default UserContext;

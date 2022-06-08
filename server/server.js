@@ -4,8 +4,6 @@ const app = express();
 app.use(cors());
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
-
 // Store and retrieve your videos from here
 // If you want, you can copy "exampleresponse.json" into here to have some data to work with
 let videos = [
@@ -79,3 +77,15 @@ app.get("/", (req, res) => {
 app.get("/api/videos", (req, res) => {
   res.status(200).json(videos);
 });
+app.delete("/api/deletevideo/:id", (req, res) => {
+  const { id } = req.params;
+  const targetVideo = videos.find((video) => video.id == id);
+  if (targetVideo) {
+    videos = videos.filter((video) => video != targetVideo);
+    res.json(videos);
+  } else {
+    res.status(404).json({ message: "Video not found" });
+  }
+});
+
+app.listen(port, () => console.log(`Listening on port ${port}`));
