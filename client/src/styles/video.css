@@ -42,6 +42,32 @@
   padding: 0.5em 2em;
   background: red;
 }
+.back_green {
+  background: rgba(1, 209, 1, 0.555);
+}
+.back_yellow {
+  background: rgba(255, 230, 0, 0.623);
+}
+.back_red {
+  background: rgba(255, 0, 0, 0.568);
+}
+.video_title {
+  margin: 0.5em;
+  font-size: 1.2rem;
+  text-align: center;
+}
+.video_rating {
+  text-align: center;
+}
+.rating_title_div {
+  background: rgba(255, 255, 255, 0.226);
+  padding: 0.5em;
+  margin: 0.5em;
+  border-radius: 20px;
+}
+.video_cont {
+  text-align: center;
+}
 @media screen and (min-width: 600px) {
   .video_section {
     max-width: 45%;

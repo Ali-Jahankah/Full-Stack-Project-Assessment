@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import { createContext } from "react";
 
 const UserContext = createContext({
   data: [],
@@ -9,6 +9,10 @@ const UserContext = createContext({
   searchBtn: false,
   setSearchBtn: () => {},
   addVideoHandler: () => {},
+  preloader: false,
+  setPreloader: () => {},
+  newVideo: false,
+  setNewVideo: () => {},
 });
 
 export default UserContext;
