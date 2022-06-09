@@ -68,7 +68,7 @@ const Context = ({ children }) => {
       try {
         setPreloader(true);
         const response = await fetch(
-          "http://ali-jahankah-fullstack.glitch.me/api/videos"
+          "https://ali-jahankah-fullstack.glitch.me/api/videos"
         );
         const videoData = await response.json();
         setData(videoData);
