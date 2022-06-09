@@ -50,12 +50,25 @@ const Context = ({ children }) => {
       setPreloader(false);
     }
   };
+  const searchHandler = async (word) => {
+    try {
+      setPreloader(true);
+      const response = await fetch(
+        `https://ali-jahankah-fullstack.glitch.me/api/searchvideos?search=${word}`
+      );
+      const newData = await response.json();
+      newData.message ? alert(newData.message) : setData(newData);
+      setPreloader(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     const getVideos = async () => {
       try {
         setPreloader(true);
         const response = await fetch(
-          "https://ali-jahankah-fullstack.glitch.me/api/videos"
+          "http://ali-jahankah-fullstack.glitch.me/api/videos"
         );
         const videoData = await response.json();
         setData(videoData);
@@ -80,6 +93,7 @@ const Context = ({ children }) => {
         setPreloader,
         newVideo,
         setNewVideo,
+        searchHandler,
       }}
     >
       {children}

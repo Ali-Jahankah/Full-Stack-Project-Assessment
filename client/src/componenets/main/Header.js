@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import UserContext from "../../context/UserContext";
 import "../../styles/header.css";
 
 const Header = () => {
-  const { searchBtn, setSearchBtn } = useContext(UserContext);
+  const { searchBtn, setSearchBtn, searchHandler } = useContext(UserContext);
+  const [search, setSearch] = useState("");
   return (
     <header className="header">
       <nav className="header_nav">
@@ -16,8 +17,20 @@ const Header = () => {
           <h2 className="title">Video Recommendation</h2>
           {searchBtn && (
             <div className="search_cont">
-              <input type="text" placeholder="video..." />
-              <span className="search_btn">Search</span>
+              <input
+                type="text"
+                placeholder="video..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <span
+                className="search_btn"
+                onClick={() => {
+                  searchHandler(search);
+                }}
+              >
+                Search
+              </span>
             </div>
           )}
         </div>

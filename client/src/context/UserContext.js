@@ -13,6 +13,7 @@ const UserContext = createContext({
   setPreloader: () => {},
   newVideo: false,
   setNewVideo: () => {},
+  searchHandler: () => {},
 });
 
 export default UserContext;

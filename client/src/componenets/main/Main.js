@@ -8,6 +8,7 @@ const Main = () => {
   return (
     <>
       <Videos></Videos>
+
       {preloader && <PreLoader></PreLoader>}
       {newVideo && <NewVideo></NewVideo>}
     </>

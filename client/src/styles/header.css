@@ -28,6 +28,7 @@
 .search_svg {
   width: 30px;
   cursor: pointer;
+  margin-right: 1em;
 }
 .title_search_div {
   width: 50%;
@@ -39,18 +40,29 @@
   border-radius: 10px;
 }
 .search_cont {
-  position: relative;
+  display: flex;
+  justify-content: center;
 }
 .search_btn {
-  position: absolute;
-  top: 0;
   padding: 8px 5px;
-  height: 100%;
-  right: 0;
+  margin-left: -46px;
   cursor: pointer;
   font-size: 0.7rem;
   background: black;
   color: rgb(228, 228, 228);
   border-radius: 10px;
   font-weight: 600;
+}
+@media screen and (min-width: 500px) {
+  .logo_div img {
+    max-width: 120px;
+  }
+  .search_btn {
+    right: 0;
+  }
+}
+@media screen and (min-width: 500px) {
+  .search_btn {
+    right: 1em;
+  }
 }

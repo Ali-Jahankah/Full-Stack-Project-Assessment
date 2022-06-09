@@ -1,7 +1,9 @@
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 const app = express();
 app.use(cors());
+app.use(bodyParser.json());
 const port = process.env.PORT || 5000;
 
 // Store and retrieve your videos from here
@@ -82,10 +84,24 @@ app.delete("/api/deletevideo/:id", (req, res) => {
   const targetVideo = videos.find((video) => video.id == id);
   if (targetVideo) {
     videos = videos.filter((video) => video != targetVideo);
+    console.log(videos.length);
     res.json(videos);
   } else {
     res.status(404).json({ message: "Video not found" });
   }
 });
-
+app.post("/api/addvideo", (req, res) => {
+  const newVideo = req.body;
+  videos.push(newVideo);
+  res.json(videos);
+});
+app.get("/api/searchvideos", (req, res) => {
+  const search = req.query.search;
+  const newVideos = videos.filter((video) =>
+    video.title.toLowerCase().includes(search.toLowerCase())
+  );
+  newVideos.length !== 0
+    ? res.json(newVideos)
+    : res.json({ message: "Nothing found :(" });
+});
 app.listen(port, () => console.log(`Listening on port ${port}`));
