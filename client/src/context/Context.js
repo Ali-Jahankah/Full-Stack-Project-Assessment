@@ -30,6 +30,11 @@ const Context = ({ children }) => {
   };
   const addVideoHandler = async (info) => {
     setNewVideo(false);
+    setPreloader(true);
+    const regExp =
+      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = info.url.match(regExp);
+    info.url = `https://youtube.com/embed/${match[2]}`;
     const newVideoData = info;
     const postOpt = {
       method: "POST",
@@ -37,7 +42,6 @@ const Context = ({ children }) => {
       body: JSON.stringify(newVideoData),
     };
     try {
-      setPreloader(true);
       const response = await fetch(
         "https://ali-jahankah-fullstack.glitch.me/api/addvideo",
         postOpt
