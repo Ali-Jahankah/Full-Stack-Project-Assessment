@@ -1,7 +1,9 @@
 .video_section {
   background-color: #ff8c00;
   background-image: linear-gradient(0deg, #ff8c00 0%, #f878a3 100%);
-
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   border-radius: 20px;
   padding: 1.5em;
   max-width: 100%;

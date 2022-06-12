@@ -28,13 +28,23 @@ const Context = ({ children }) => {
       setPreloader(false);
     }
   };
+
   const addVideoHandler = async (info) => {
     setNewVideo(false);
     setPreloader(true);
+
     const regExp =
       /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = info.url.match(regExp);
+    if (info.url.slice(0, 24) !== "https://www.youtube.com/" || !match) {
+      setPreloader(false);
+      return alert(
+        "Please enter a valid url :)\n EX: https://www.youtube.com/..."
+      );
+    }
+
     info.url = `https://youtube.com/embed/${match[2]}`;
+
     const newVideoData = info;
     const postOpt = {
       method: "POST",
@@ -83,7 +93,9 @@ const Context = ({ children }) => {
       }
     };
     data.length === 0 && getVideos();
-  }, [setData]);
+  }, []);
+  const sorting = () => setData([...data].sort((a, b) => a.rating - b.rating));
+
   return (
     <UserContext.Provider
       value={{
@@ -98,6 +110,7 @@ const Context = ({ children }) => {
         newVideo,
         setNewVideo,
         searchHandler,
+        sorting,
       }}
     >
       {children}

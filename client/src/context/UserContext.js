@@ -14,6 +14,7 @@ const UserContext = createContext({
   newVideo: false,
   setNewVideo: () => {},
   searchHandler: () => {},
+  sorting: () => {},
 });
 
 export default UserContext;
