@@ -2,17 +2,12 @@ const express = require("express");
 const cors = require("cors");
 const { Pool } = require("pg");
 const bodyParser = require("body-parser");
-const { response } = require("express");
+
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 const port = process.env.PORT || 5000;
 const pool = new Pool({
-  user: "ali",
-  host: "localhost",
-  database: "fullstack",
-  password: "111111",
-  port: 5432,
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false,
