@@ -17,7 +17,7 @@ const Context = ({ children }) => {
     try {
       setPreloader(true);
       const response = await fetch(
-        `https://ali-jahankah-fullstack.glitch.me/api/deletevideo/${id}`,
+        `http://localhost:5000/api/deletevideo/${id}`,
         deleteOpt
       );
       const newData = await response.json();
@@ -32,7 +32,6 @@ const Context = ({ children }) => {
   const addVideoHandler = async (info) => {
     setNewVideo(false);
     setPreloader(true);
-
     const regExp =
       /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = info.url.match(regExp);
@@ -53,14 +52,20 @@ const Context = ({ children }) => {
     };
     try {
       const response = await fetch(
-        "https://ali-jahankah-fullstack.glitch.me/api/addvideo",
+        "http://localhost:5000/api/addvideo",
         postOpt
       );
-      const newData = await response.json();
-      setData(newData);
-      setPreloader(false);
+
+      if (response.status === 200) {
+        const newData = await response.json();
+        setData(newData);
+        setPreloader(false);
+      } else {
+        alert(`Video already exists`);
+        setPreloader(false);
+      }
     } catch (error) {
-      console.log(error);
+      alert(`${error} \n Video already exists`);
       setPreloader(false);
     }
   };
@@ -68,7 +73,7 @@ const Context = ({ children }) => {
     try {
       setPreloader(true);
       const response = await fetch(
-        `https://ali-jahankah-fullstack.glitch.me/api/searchvideos?search=${word}`
+        `http://localhost:5000/api/searchvideos?search=${word}`
       );
       const newData = await response.json();
       newData.message ? alert(newData.message) : setData(newData);
@@ -81,9 +86,7 @@ const Context = ({ children }) => {
     const getVideos = async () => {
       try {
         setPreloader(true);
-        const response = await fetch(
-          "https://ali-jahankah-fullstack.glitch.me/api/videos"
-        );
+        const response = await fetch("http://localhost:5000/api/videos");
         const videoData = await response.json();
         setData(videoData);
         setPreloader(false);

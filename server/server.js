@@ -1,107 +1,79 @@
 const express = require("express");
 const cors = require("cors");
+const { Pool } = require("pg");
 const bodyParser = require("body-parser");
+const { response } = require("express");
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 const port = process.env.PORT || 5000;
-
+const pool = new Pool({
+  user: "ali",
+  host: "localhost",
+  database: "fullstack",
+  password: "111111",
+  port: 5432,
+});
 // Store and retrieve your videos from here
 // If you want, you can copy "exampleresponse.json" into here to have some data to work with
-let videos = [
-  {
-    id: 523523,
-    title: "Never Gonna Give You Up",
-    url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    rating: 23,
-  },
-  {
-    id: 523427,
-    title: "The Coding Train",
-    url: "https://www.youtube.com/embed/HerCR8bw_GE",
-    rating: 230,
-  },
-  {
-    id: 82653,
-    title: "Mac & Cheese | Basics with Babish",
-    url: "https://www.youtube.com/embed/FUeyrEN14Rk",
-    rating: 2111,
-  },
-  {
-    id: 858566,
-    title: "Videos for Cats to Watch - 8 Hour Bird Bonanza",
-    url: "https://www.youtube.com/embed/xbs7FT7dXYc",
-    rating: 11,
-  },
-  {
-    id: 453538,
-    title:
-      "The Complete London 2012 Opening Ceremony | London 2012 Olympic Games",
-    url: "https://www.youtube.com/embed/4As0e4de-rI",
-    rating: 3211,
-  },
-  {
-    id: 283634,
-    title: "Learn Unity - Beginner's Game Development Course",
-    url: "https://www.youtube.com/embed/gB1F9G0JXOo",
-    rating: 211,
-  },
-  {
-    id: 562824,
-    title: "Cracking Enigma in 2021 - Computerphile",
-    url: "https://www.youtube.com/embed/RzWB5jL5RX0",
-    rating: 111,
-  },
-  {
-    id: 442452,
-    title: "Coding Adventure: Chess AI",
-    url: "https://www.youtube.com/embed/U4ogK0MIzqk",
-    rating: 671,
-  },
-  {
-    id: 536363,
-    title: "Coding Adventure: Ant and Slime Simulations",
-    url: "https://www.youtube.com/embed/X-iSQQgOd1A",
-    rating: 76,
-  },
-  {
-    id: 323445,
-    title: "Why the Tour de France is so brutal",
-    url: "https://www.youtube.com/embed/ZacOS8NBK6U",
-    rating: 73,
-  },
-];
+
 // GET "/"
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   // Delete this line after you've confirmed your server is running
   res.send({ express: "Your Backend Service is Running" });
 });
-app.get("/api/videos", (req, res) => {
-  res.status(200).json(videos);
-});
-app.delete("/api/deletevideo/:id", (req, res) => {
-  const { id } = req.params;
-  const targetVideo = videos.find((video) => video.id == id);
-  if (targetVideo) {
-    videos = videos.filter((video) => video != targetVideo);
-    console.log(videos.length);
-    res.json(videos);
-  } else {
-    res.status(404).json({ message: "Video not found" });
+app.get("/api/videos", async (req, res) => {
+  const query = "SELECT * FROM videos";
+  try {
+    const videos = await pool.query(query);
+    res.status(200).json(videos.rows);
+  } catch (error) {
+    console.log(error);
+    res.status(404).send("Not found");
   }
 });
-app.post("/api/addvideo", (req, res) => {
-  const newVideo = req.body;
-  videos.push(newVideo);
-  res.json(videos);
+app.delete("/api/deletevideo/:id", async (req, res) => {
+  const { id } = req.params;
+  const targetQuery = "SELECT EXISTS (SELECT * FROM videos WHERE id = $1)";
+  const deleteQuery = "DELETE FROM videos WHERE id = $1";
+  try {
+    const target = await pool.query(targetQuery, [id]);
+    if (target.rows[0].exists) {
+      await pool.query(deleteQuery, [id]);
+      const videos = await pool.query("SELECT * FROM videos");
+
+      res.status(200).json(videos.rows);
+    } else {
+      res.status(404).json({ message: "Video not found" });
+    }
+  } catch (er) {
+    console.log(er);
+    res.status(500).send("Server Error");
+  }
 });
-app.get("/api/searchvideos", (req, res) => {
-  const search = req.query.search;
-  const newVideos = videos.filter((video) =>
-    video.title.toLowerCase().includes(search.toLowerCase())
-  );
-  newVideos.length !== 0
-    ? res.json(newVideos)
-    : res.json({ message: "Nothing found :(" });
+app.post("/api/addvideo", async (req, res) => {
+  const { title, url, rating } = req.body;
+
+  const checkQuery = "select exists (select * from videos where url = $1)";
+  const addQuery =
+    "INSERT INTO videos (title, url, rating) VALUES ($1, $2, $3)";
+  const allVideoQuery = "SELECT * FROM videos";
+
+  const checkVideo = await pool.query(checkQuery, [url]);
+  console.log(checkVideo);
+  if (!checkVideo.rows[0].exists) {
+    await pool.query(addQuery, [title, url, rating]);
+    const allVideos = await pool.query(allVideoQuery);
+    res.status(200).json(allVideos.rows);
+  } else {
+    const allVideos = await pool.query(allVideoQuery);
+    res.status(400).json(allVideos.rows);
+  }
+});
+app.get("/api/searchvideos", async (req, res) => {
+  const search = req.query.search.toLocaleLowerCase();
+  const searchQuery = "SELECT * FROM videos WHERE title LIKE '%' || $1 || '%'";
+  const videos = await pool.query(searchQuery, [search]);
+  res.status(200).json(videos.rows);
 });
 app.listen(port, () => console.log(`Listening on port ${port}`));
