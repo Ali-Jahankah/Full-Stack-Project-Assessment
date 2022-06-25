@@ -13,6 +13,10 @@ const pool = new Pool({
   database: "fullstack",
   password: "111111",
   port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 // Store and retrieve your videos from here
 // If you want, you can copy "exampleresponse.json" into here to have some data to work with
