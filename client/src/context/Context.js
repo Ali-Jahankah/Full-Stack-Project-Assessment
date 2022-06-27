@@ -17,7 +17,7 @@ const Context = ({ children }) => {
     try {
       setPreloader(true);
       const response = await fetch(
-        `http://localhost:5000/api/deletevideo/${id}`,
+        `https://fullstack-ali-jahankah.herokuapp.com/api/deletevideo/${id}`,
         deleteOpt
       );
       const newData = await response.json();
@@ -52,7 +52,7 @@ const Context = ({ children }) => {
     };
     try {
       const response = await fetch(
-        "http://localhost:5000/api/addvideo",
+        "https://fullstack-ali-jahankah.herokuapp.com/api/addvideo",
         postOpt
       );
 
@@ -73,7 +73,7 @@ const Context = ({ children }) => {
     try {
       setPreloader(true);
       const response = await fetch(
-        `http://localhost:5000/api/searchvideos?search=${word}`
+        `https://fullstack-ali-jahankah.herokuapp.com/api/searchvideos?search=${word}`
       );
       const newData = await response.json();
       newData.message ? alert(newData.message) : setData(newData);
@@ -86,7 +86,9 @@ const Context = ({ children }) => {
     const getVideos = async () => {
       try {
         setPreloader(true);
-        const response = await fetch("http://localhost:5000/api/videos");
+        const response = await fetch(
+          "https://fullstack-ali-jahankah.herokuapp.com/api/videos"
+        );
         const videoData = await response.json();
         setData(videoData);
         setPreloader(false);
